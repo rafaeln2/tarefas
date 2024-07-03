@@ -7,10 +7,12 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     public interface CreateUser {
     }
@@ -34,7 +36,11 @@ public class User {
     @Size(groups = CreateUser.class, min = 6, max = 50)
     private String password;
 
+    @OneToMany(mappedBy = "user") //nome da variavel de usuario(essa classe) dentro da clase task
+    private List<Task> tasks;
+
     public User() {
+        this.tasks = new ArrayList<>();
     }
 
     public User(Long id, String username, String password) {
@@ -70,6 +76,15 @@ public class User {
         return this;
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public User setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -83,5 +98,4 @@ public class User {
         return Objects.hashCode(id);
     }
 
-//    private List<Task> tasks = New ArrayList<>();
 }

@@ -25,7 +25,7 @@ public class User {
     private Long id;
 
     @Column(name = "username", length = 50, nullable = false, unique = true)
-    @NotNull(groups = CreateUser.class) //@NotBlank and @NotNull @NotEmpty all do the same stuff, using just as an example
+    @NotNull(groups = CreateUser.class) //@NotBlank and @NotNull @NotEmpty all do the same stuff, using just for practice
     @NotEmpty(groups = CreateUser.class)
     @Size(groups = CreateUser.class, min = 2, max = 50)
     private String username;

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Objects;
 
@@ -15,7 +17,9 @@ public class Task {
     private Long id;
 
     @ManyToOne //varias tarefas para um usuario
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name= "user_id", nullable = false, updatable = false)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Column(length = 255, nullable = false)

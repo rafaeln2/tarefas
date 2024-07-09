@@ -13,8 +13,6 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private TaskRepository taskRepository;
 
     public User findById(final Long id){
         Optional<User> usuario = userRepository.findById(id);
@@ -33,7 +31,6 @@ public class UserService {
             user.setId(null);
         }
         user = userRepository.save(user);
-        taskRepository.saveAll(user.getTasks());
         return user;
     }
 

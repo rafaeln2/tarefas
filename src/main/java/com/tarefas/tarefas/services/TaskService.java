@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,6 +23,11 @@ public class TaskService {
         return task.orElseThrow(() -> new RuntimeException(
                 "Tarefa não encontrado: %s".formatted(id))
         );
+    }
+
+    public List<Task> findAllByUserId(final Long userId){
+        List<Task> tasks = taskRepository.findByUser_Id(userId);
+        return tasks;
     }
 
     @Transactional

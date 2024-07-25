@@ -3,12 +3,14 @@ package com.tarefas.tarefas;
 import com.tarefas.tarefas.models.User;
 import com.tarefas.tarefas.repositories.TaskRepository;
 import com.tarefas.tarefas.repositories.UserRepository;
+import com.tarefas.tarefas.services.ViaCepService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,8 @@ class TarefasApplicationTests {
 	private TaskRepository taskRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private ViaCepService viaCepService;
 
 	@Test
 	void contextLoads() {
@@ -68,5 +72,16 @@ class TarefasApplicationTests {
 		Assertions.assertTrue(primeiroUsuario != null ? !taskRepository.findByUser_Id(primeiroUsuario.getId()).isEmpty() : false);
 
 	}
+
+	@Test
+	void validaRequisicaoViaCep(){
+		final var cep = "88117269";
+		try {
+			final var endereco = viaCepService.findByCep(cep);
+			System.out.println(endereco.toString());
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+    }
 
 }

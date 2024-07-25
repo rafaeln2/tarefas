@@ -2,11 +2,14 @@ package com.tarefas.tarefas.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +43,11 @@ public class User {
     @OneToMany(mappedBy = "user") //nome da variavel de usuario(essa classe) dentro da clase task
     private List<Task> tasks;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "address_id", nullable = true, updatable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    private Address address;
+
     public User() {
         this.tasks = new ArrayList<>();
     }
@@ -49,6 +57,16 @@ public class User {
         this.username = username;
         this.password = password;
     }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public User setAddress(Address address) {
+        this.address = address;
+        return this;
+    }
+
 
     public Long getId() {
         return id;

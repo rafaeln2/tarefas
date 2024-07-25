@@ -1,9 +1,9 @@
 package com.tarefas.tarefas.services;
 
 import com.tarefas.tarefas.models.User;
-import com.tarefas.tarefas.repositories.TaskRepository;
 import com.tarefas.tarefas.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +13,8 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ViaCepService viaCepService;
 
     public User findById(final Long id){
         Optional<User> usuario = userRepository.findById(id);
@@ -35,9 +37,12 @@ public class UserService {
     }
 
     @Transactional
-    public User update(User user){
+    public User update(User user, String cep){
         var userDB = findById(user.getId());
         userDB.setPassword(user.getPassword());
+        if (Strings.isNotEmpty(cep)){
+            userDB.setAddress(viaCepService.findByCep(cep));
+        }
         return userRepository.save(userDB);
     }
 
@@ -47,8 +52,7 @@ public class UserService {
         try {
             userRepository.deleteById(id);
         } catch (Exception e) {
-            //TODO: mudar pra cascade
-            throw new RuntimeException("Não é possivel excluir pois há outras entidades relacionadas");
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

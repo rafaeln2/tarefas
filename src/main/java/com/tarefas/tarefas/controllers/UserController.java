@@ -3,8 +3,10 @@ package com.tarefas.tarefas.controllers;
 import com.tarefas.tarefas.models.User;
 import com.tarefas.tarefas.services.UserService;
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -44,9 +46,9 @@ public class UserController {
 
     @PutMapping("/{id}")
     @Validated(User.UpdateUser.class)
-    public ResponseEntity<Void> update(@Valid @RequestBody User obj, @PathVariable Long id){
+    public ResponseEntity<Void> update(@Valid @RequestBody User obj, @PathVariable Long id, @RequestParam String cep){
         obj.setId(id);
-        this.userService.update(obj);
+        this.userService.update(obj, cep);
         return ResponseEntity.noContent().build();
     }
 

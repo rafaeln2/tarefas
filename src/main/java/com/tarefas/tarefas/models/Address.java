@@ -80,4 +80,16 @@ public class Address {
         this.uf = uf;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", cep='" + cep + '\'' +
+                ", logradouro='" + logradouro + '\'' +
+                ", complemento='" + complemento + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", uf='" + uf + '\'' +
+                '}';
+    }
 }

@@ -1,6 +1,6 @@
 package com.tarefas.tarefas.repositories;
 
-import com.tarefas.tarefas.models.User;
+import com.tarefas.tarefas.models.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

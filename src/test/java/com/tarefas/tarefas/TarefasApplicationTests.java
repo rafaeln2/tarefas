@@ -1,7 +1,7 @@
 package com.tarefas.tarefas;
 
-import com.tarefas.tarefas.models.Address;
-import com.tarefas.tarefas.models.User;
+import com.tarefas.tarefas.models.entities.Address;
+import com.tarefas.tarefas.models.entities.User;
 import com.tarefas.tarefas.repositories.TaskRepository;
 import com.tarefas.tarefas.repositories.UserRepository;
 import com.tarefas.tarefas.services.ViaCepService;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

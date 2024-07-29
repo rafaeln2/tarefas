@@ -1,9 +1,7 @@
 package com.tarefas.tarefas.services;
 
-import com.tarefas.tarefas.models.Task;
-import com.tarefas.tarefas.models.User;
+import com.tarefas.tarefas.models.entities.Task;
 import com.tarefas.tarefas.repositories.TaskRepository;
-import com.tarefas.tarefas.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

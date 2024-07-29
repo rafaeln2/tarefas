@@ -1,6 +1,6 @@
 package com.tarefas.tarefas.services;
 
-import com.tarefas.tarefas.models.User;
+import com.tarefas.tarefas.models.entities.User;
 import com.tarefas.tarefas.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.util.Strings;

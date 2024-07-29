@@ -1,13 +1,13 @@
-package com.tarefas.tarefas.models;
+package com.tarefas.tarefas.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -17,6 +17,11 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
 public class User {
     public interface CreateUser {
     }
@@ -41,81 +46,12 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user") //nome da variavel de usuario(essa classe) dentro da clase task
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Task> tasks;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "address_id", nullable = true, updatable = true)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private Address address;
-
-    public User() {
-        this.tasks = new ArrayList<>();
-    }
-
-    public User(Long id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public User setAddress(Address address) {
-        this.address = address;
-        return this;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public User setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public User setUsername (String username) {
-        this.username = username;
-        return this;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public User setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    @JsonIgnore
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public User setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-        return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 
 }

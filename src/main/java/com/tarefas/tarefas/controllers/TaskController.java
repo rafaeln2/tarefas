@@ -1,6 +1,6 @@
 package com.tarefas.tarefas.controllers;
 
-import com.tarefas.tarefas.models.Task;
+import com.tarefas.tarefas.models.entities.Task;
 import com.tarefas.tarefas.services.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

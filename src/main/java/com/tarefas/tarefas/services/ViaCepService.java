@@ -1,10 +1,9 @@
 package com.tarefas.tarefas.services;
 
-import com.tarefas.tarefas.models.Address;
+import com.tarefas.tarefas.models.entities.Address;
 import com.tarefas.tarefas.models.dtos.AddressDTO;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;

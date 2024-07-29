@@ -1,18 +1,10 @@
 package com.tarefas.tarefas.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tarefas.tarefas.models.Address;
-import com.tarefas.tarefas.models.dtos.AddressDTO;
+import com.tarefas.tarefas.models.entities.Address;
 import com.tarefas.tarefas.repositories.AddressRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 @Service
 public class AddressService {

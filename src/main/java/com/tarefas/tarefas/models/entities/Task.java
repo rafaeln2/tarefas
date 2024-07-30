@@ -23,9 +23,8 @@ public class Task {
     private Long id;
 
     @ManyToOne //varias tarefas para um usuario
-    @OnDelete(action = OnDeleteAction.SET_NULL)
+//    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name= "user_id", nullable = false, updatable = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Column(length = 255, nullable = false)

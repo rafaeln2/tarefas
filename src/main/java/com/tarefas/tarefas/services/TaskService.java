@@ -2,6 +2,8 @@ package com.tarefas.tarefas.services;
 
 import com.tarefas.tarefas.models.entities.Task;
 import com.tarefas.tarefas.repositories.TaskRepository;
+import com.tarefas.tarefas.services.exceptions.DataBindingViolationException;
+import com.tarefas.tarefas.services.exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,7 @@ public class TaskService {
 
     public Task findById(final Long id){
         Optional<Task> task = taskRepository.findById(id);
-        return task.orElseThrow(() -> new RuntimeException(
+        return task.orElseThrow(() -> new ObjectNotFoundException(
                 "Tarefa não encontrado: %s".formatted(id))
         );
     }
@@ -47,13 +49,12 @@ public class TaskService {
         return taskRepository.save(taskDB);
     }
 
-    @Transactional
     public void delete(Long id){
         final var taskDB = findById(id);
         try {
             taskRepository.delete(taskDB);
         } catch (Exception e) {
-            throw new RuntimeException("Não é possivel excluir pois há outras entidades relacionadas");
+            throw new DataBindingViolationException("Não é possivel excluir pois há outras entidades relacionadas");
         }
     }
 }

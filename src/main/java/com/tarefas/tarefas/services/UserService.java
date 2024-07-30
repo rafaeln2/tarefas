@@ -2,6 +2,8 @@ package com.tarefas.tarefas.services;
 
 import com.tarefas.tarefas.models.entities.User;
 import com.tarefas.tarefas.repositories.UserRepository;
+import com.tarefas.tarefas.services.exceptions.DataBindingViolationException;
+import com.tarefas.tarefas.services.exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ public class UserService {
 
     public User findById(final Long id){
         Optional<User> usuario = userRepository.findById(id);
-        return usuario.orElseThrow(() -> new RuntimeException(
+        return usuario.orElseThrow(() -> new ObjectNotFoundException(
                 "Usuário não encontrado: %s".formatted(id))
         );
     }
@@ -46,13 +48,20 @@ public class UserService {
         return userRepository.save(userDB);
     }
 
-    @Transactional
+//    @Transactional()
+    /*
+    transactional quebra controle de exceção pelo try, sou obrigado a chamar this.userRepository.flush(); depois do Delete pra executar no DB e entrar no catch se não a anotação lida com o erro antes,
+        sendo assim impossivel tratar a exceção dentro do metodo.
+    aparenta não dar problema quando exceção é jogada de uma função anonima e.g o método de findById dessa classe
+    https://stackoverflow.com/a/64658890
+     */
     public void delete(Long id){
-        findById(id);
+        final var userDB = findById(id);
         try {
-            userRepository.deleteById(id);
+            this.userRepository.delete(userDB);
+
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new DataBindingViolationException("Não é possivel excluir pois há outras entidades relacionadas");
         }
     }
 }

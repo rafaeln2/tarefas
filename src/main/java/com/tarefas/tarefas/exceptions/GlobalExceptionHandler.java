@@ -1,5 +1,7 @@
 package com.tarefas.tarefas.exceptions;
 
+import com.tarefas.tarefas.services.exceptions.DataBindingViolationException;
+import com.tarefas.tarefas.services.exceptions.ObjectNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -10,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.MessageCodeFormatter;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -68,6 +69,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildErrorResponse(constraintViolationException, HttpStatus.UNPROCESSABLE_ENTITY, request);
     }
 
+    @ExceptionHandler(ObjectNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<Object> handleObjectNotFoundException(ObjectNotFoundException exception, WebRequest request){
+        log.error("Failed to find the requested element", exception);
+        return buildErrorResponse(exception, HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(DataBindingViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<Object> handleDataBindingViolationException(DataBindingViolationException exception, WebRequest request){
+        log.error("Failed to save entity with associated data", exception);
+        return buildErrorResponse(exception, HttpStatus.CONFLICT, request);
+    }
+
     private ResponseEntity<Object> buildErrorResponse(
             Exception exception,
             String message,
@@ -84,10 +99,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             Exception exception,
             HttpStatusCode status,
             WebRequest request) {
-        var errorResponse = new ErrorResponse(status.value(), exception.getLocalizedMessage());
-        if (this.printStackTrace) {
-            errorResponse.setStackTrace(ExceptionUtils.getStackTrace(exception));
-        }
-        return ResponseEntity.status(status).body(errorResponse);
+        return buildErrorResponse(exception, exception.getMessage(), status, request);
     }
 }

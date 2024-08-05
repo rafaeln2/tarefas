@@ -79,7 +79,6 @@ class TarefasApplicationTests {
             Address cepExistente = viaCepService.findByCep("88117260");
             System.out.println(cepExistente.toString());
 //            Address cepNaoExistente = viaCepService.findByCep("88117269");
-            
             Assertions.assertTrue(cepExistente != null);
 //            Assertions.assertTrue(cepNaoExistente == null);
         } catch (RuntimeException e) {
@@ -89,7 +88,7 @@ class TarefasApplicationTests {
 
     @Test
     void validaRequisicaoViaCep() {
-        final var cep = "88117269";
+        final var cep = "88117260";
         try {
             final var endereco = viaCepService.findByCep(cep);
             System.out.println(endereco.toString());
@@ -97,5 +96,15 @@ class TarefasApplicationTests {
             e.printStackTrace();
         }
     }
+
+//    void testeDataBindingViolationException() {
+//
+//        try {
+//            final var endereco = viaCepService.findByCep(cep);
+//            System.out.println(endereco.toString());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

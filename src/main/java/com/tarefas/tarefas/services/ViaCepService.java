@@ -1,7 +1,7 @@
 package com.tarefas.tarefas.services;
 
+import com.tarefas.tarefas.models.dtos.AddressRecordDTO;
 import com.tarefas.tarefas.models.entities.Address;
-import com.tarefas.tarefas.models.dtos.AddressDTO;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -27,8 +27,8 @@ public class ViaCepService {
             if (response.body().contains("erro")){
                 throw new IllegalArgumentException("CEP não encontrado!");
             }
-            final var dto = mapper.readValue(response.body(), AddressDTO.class);
-            final var entity = new Address(dto.getCep(), dto.getLogradouro(), dto.getComplemento(), dto.getBairro(), dto.getUf());
+            final var dto = mapper.readValue(response.body(), AddressRecordDTO.class);
+            final var entity = new Address(dto.cep(), dto.logradouro(), dto.complemento(), dto.bairro(), dto.uf());
             return entity;
         } catch (Exception e) {
             throw new RuntimeException(e);

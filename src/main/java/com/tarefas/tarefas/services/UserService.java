@@ -1,15 +1,19 @@
 package com.tarefas.tarefas.services;
 
 import com.tarefas.tarefas.models.entities.User;
+import com.tarefas.tarefas.models.entities.enums.ProfileEnum;
 import com.tarefas.tarefas.repositories.UserRepository;
 import com.tarefas.tarefas.services.exceptions.DataBindingViolationException;
 import com.tarefas.tarefas.services.exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserService {
@@ -17,6 +21,8 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private ViaCepService viaCepService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public User findById(final Long id){
         Optional<User> usuario = userRepository.findById(id);
@@ -34,6 +40,8 @@ public class UserService {
             }
             user.setId(null);
         }
+        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setProfiles(Stream.of(ProfileEnum.USER.getCode()).collect(Collectors.toSet()));
         user = userRepository.save(user);
         return user;
     }
@@ -41,7 +49,7 @@ public class UserService {
     @Transactional
     public User update(User user, String cep){
         var userDB = findById(user.getId());
-        userDB.setPassword(user.getPassword());
+        userDB.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
         if (Strings.isNotEmpty(cep)){
             userDB.setAddress(viaCepService.findByCep(cep));
         }
